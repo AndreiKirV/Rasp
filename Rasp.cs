@@ -4,28 +4,63 @@ namespace Rasp
 {
     class Weapon
     {
-        public int Damage;
-        public int Bullets;
+        private int _damage;
+        private int _bullets;
 
-        public void Fire(Player player)
+        public Weapon(int damage, int bullets)
         {
-            player.Health -= Damage;
-            Bullets -= 1;
+            if (damage > 0)
+                _damage = damage;
+            else
+                _damage = 1;
+
+            if (bullets > 0)
+                _bullets = bullets;
+            else
+                _bullets = 1;
+        }
+
+        public void TryFire(Player player)
+        {
+            if (_bullets > 0)
+            {
+                player.TryTakeDamage(_damage);
+                _bullets -= 1;
+            }
+            else
+                Console.WriteLine("Кончились патроны");
         }
     }
 
     class Player
     {
-        public int Health;
+        private int _health;
+        private bool _isDead = false;
+
+        public void TryTakeDamage(int damage) 
+        {
+            if (damage > 0 && _isDead == false)
+            {
+                _health -= damage;
+
+                if (_health <= 0)
+                {
+                    _isDead = true;
+                }
+            }
+            else
+                Console.WriteLine($"Персонаж уже мертв, или урон меньше положительного значения");
+            }
+        }
     }
 
     class Bot
     {
-        public Weapon Weapon;
+        private Weapon _weapon;
 
         public void OnSeePlayer(Player player)
         {
-            Weapon.Fire(player);
+            _weapon.TryFire(player);
         }
-    } 
+    }
 }
