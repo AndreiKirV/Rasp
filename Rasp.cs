@@ -8,6 +8,19 @@ namespace Rasp
         private int _damage;
         private int _bullets;
 
+        public Weapon(int damage, int bullets)
+        {
+            if (damage > 0)
+                _damage = damage;
+            else
+                _damage = 1;
+
+            if (bullets > 0)
+                _bullets = bullets;
+            else
+                _bullets = 1;
+        }
+
         public void TryFire(Player player)
         {
             if (_bullets > 0)
